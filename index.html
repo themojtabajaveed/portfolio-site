@@ -1,1123 +1,325 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mojtaba Javeed Siddiqui — AI Automation Engineer</title>
-  <meta name="description" content="AI Automation Engineer building agents that chase missing client documents for UK accountancy practices. Document intake, LLM extraction, checklist logic, human approval, audit logs and evals." />
-  <meta name="keywords" content="AI Automation Engineer, AI agents, accountancy automation, document intake, LLM extraction, RAG, n8n, evals, Making Tax Digital, UK accountants" />
-  <meta name="author" content="Mojtaba Javeed Siddiqui" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Mojtaba Javeed Siddiqui — AI Automation Engineer" />
-  <meta property="og:description" content="AI agents that chase missing client documents for UK accountancy practices. AI workflow + agent engineer (RAG, n8n, evals)." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://themojtabajaveed.netlify.app/" />
-  <meta property="og:image" content="https://themojtabajaveed.netlify.app/profile.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #0a0a0c;
-      --bg-elevated: #131316;
-      --text: #f5f1eb;
-      --text-dim: #a8a39c;
-      --text-faint: #6e6963;
-      --accent: #d4a574;
-      --accent-warm: #c89b6b;
-      --accent-deep: #8b6845;
-      --border: rgba(245, 241, 235, 0.07);
-      --border-strong: rgba(245, 241, 235, 0.18);
-    }
-
-    html { scroll-behavior: smooth; background: var(--bg); }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      position: relative;
-      font-weight: 400;
-    }
-
-    ::selection { background: var(--accent); color: var(--bg); }
-
-    a { color: inherit; }
-
-    /* ===== Background — gradient mesh + grain ===== */
-    .mesh-bg {
-      position: fixed;
-      inset: -10%;
-      z-index: -2;
-      background:
-        radial-gradient(ellipse 70% 50% at 18% 22%, rgba(212, 165, 116, 0.11), transparent 60%),
-        radial-gradient(ellipse 60% 50% at 82% 78%, rgba(139, 104, 69, 0.09), transparent 60%),
-        radial-gradient(ellipse 50% 35% at 50% 100%, rgba(212, 165, 116, 0.05), transparent 70%),
-        var(--bg);
-      animation: meshFloat 28s ease-in-out infinite;
-      will-change: transform;
-    }
-
-    @keyframes meshFloat {
-      0%, 100% { transform: scale(1) rotate(0deg) translate(0, 0); }
-      33%      { transform: scale(1.06) rotate(0.6deg) translate(1%, -1%); }
-      66%      { transform: scale(0.98) rotate(-0.4deg) translate(-1%, 1%); }
-    }
-
-    .grain {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.06;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-      animation: grainShift 0.6s steps(2) infinite;
-    }
-
-    @keyframes grainShift {
-      0%   { transform: translate(0, 0); }
-      50%  { transform: translate(-2%, -2%); }
-      100% { transform: translate(2%, 1%); }
-    }
-
-    /* ===== Navigation ===== */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.4rem 2rem;
-      background: rgba(10, 10, 12, 0.55);
-      backdrop-filter: blur(20px) saturate(140%);
-      -webkit-backdrop-filter: blur(20px) saturate(140%);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.15rem;
-      font-weight: 500;
-      letter-spacing: -0.5px;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .logo-dot { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.4rem;
-      list-style: none;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 400;
-      transition: color 0.3s ease;
-      letter-spacing: 0.2px;
-    }
-
-    .nav-links a:hover { color: var(--accent); }
-
-    .nav-cta {
-      background: var(--accent);
-      color: var(--bg) !important;
-      padding: 0.55rem 1.2rem;
-      border-radius: 100px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .nav-cta:hover {
-      background: var(--text);
-      transform: translateY(-1px);
-    }
-
-    /* ===== Layout ===== */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-    .container-narrow { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
-
-    /* ===== Hero ===== */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 9rem 2rem 4rem;
-      position: relative;
-    }
-
-    .hero-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.45fr 1fr;
-      gap: 5rem;
-      align-items: center;
-      width: 100%;
-    }
-
-    .hero-content { max-width: 720px; }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      margin-bottom: 2.4rem;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 100px;
-      background: rgba(245, 241, 235, 0.02);
-    }
-
-    .hero-badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: blink 2s ease-in-out infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: 0.35; transform: scale(0.8); }
-    }
-
-    .hero-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.6rem, 5.8vw, 4.7rem);
-      line-height: 1.02;
-      letter-spacing: -2.5px;
-      font-weight: 400;
-      margin-bottom: 1.8rem;
-      color: var(--text);
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-      font-weight: 300;
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--text-dim);
-      max-width: 540px;
-      margin-bottom: 2.6rem;
-      line-height: 1.75;
-      font-weight: 300;
-    }
-
-    .hero-ctas {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.9rem 1.7rem;
-      border-radius: 100px;
-      font-size: 0.92rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      font-family: inherit;
-      letter-spacing: 0.2px;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    .btn-primary:hover {
-      background: var(--text);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(212, 165, 116, 0.15);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border-strong);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ===== Portrait ===== */
-    .portrait-wrap {
-      position: relative;
-      justify-self: end;
-      width: 320px;
-    }
-
-    .portrait {
-      width: 320px;
-      height: 400px;
-      object-fit: cover;
-      object-position: center 25%;
-      border-radius: 3px;
-      filter: contrast(1.07) saturate(0.88) brightness(0.93);
-      box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.55),
-        0 0 0 1px var(--border-strong);
-      position: relative;
-      z-index: 2;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .portrait-wrap:hover .portrait { transform: translate(-6px, -6px); }
-
-    .portrait-frame {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      width: 320px;
-      height: 400px;
-      border: 1px solid var(--accent);
-      border-radius: 3px;
-      z-index: 1;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .portrait-wrap:hover .portrait-frame { transform: translate(6px, 6px); }
-
-    .portrait-caption {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--text-faint);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: 2.2rem;
-      padding-left: 1rem;
-      border-left: 1px solid var(--accent);
-      line-height: 1.7;
-    }
-
-    .portrait-caption strong {
-      color: var(--text-dim);
-      font-weight: 400;
-    }
-
-    /* ===== Sections ===== */
-    section {
-      padding: 6.5rem 0;
-      position: relative;
-    }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 1.2rem;
-      display: block;
-    }
-
-    .section-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -1.2px;
-      margin-bottom: 1.5rem;
-      color: var(--text);
-      max-width: 720px;
-    }
-
-    .section-title em {
-      font-style: italic;
-      color: var(--accent);
-      font-weight: 300;
-    }
-
-    .section-intro {
-      color: var(--text-dim);
-      font-size: 1.05rem;
-      max-width: 580px;
-      line-height: 1.8;
-      margin-bottom: 4rem;
-      font-weight: 300;
-    }
-
-    /* ===== About ===== */
-    .about-content {
-      display: grid;
-      gap: 1.6rem;
-      max-width: 720px;
-    }
-
-    .about-content p {
-      font-size: 1.05rem;
-      color: var(--text-dim);
-      line-height: 1.85;
-      font-weight: 300;
-    }
-
-    .about-content p strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* ===== Work ===== */
-    .work-list {
-      display: grid;
-      gap: 1px;
-      background: var(--border);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .work-item {
-      background: var(--bg);
-      padding: 2.6rem 2rem;
-      transition: all 0.4s ease;
-      display: grid;
-      grid-template-columns: 70px 1fr 120px;
-      gap: 2rem;
-      align-items: start;
-    }
-
-    .work-item:hover {
-      background: var(--bg-elevated);
-    }
-
-    .work-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--accent);
-      letter-spacing: 2px;
-    }
-
-    .work-content h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.55rem;
-      font-weight: 500;
-      margin-bottom: 0.9rem;
-      color: var(--text);
-      letter-spacing: -0.5px;
-      line-height: 1.2;
-    }
-
-    .work-content p {
-      color: var(--text-dim);
-      font-size: 0.95rem;
-      line-height: 1.75;
-      margin-bottom: 1.2rem;
-      max-width: 580px;
-      font-weight: 300;
-    }
-
-    .work-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .work-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--text-dim);
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      padding: 0.32rem 0.75rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 100px;
-    }
-
-    .work-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--text-faint);
-      letter-spacing: 1px;
-      text-align: right;
-      text-transform: uppercase;
-    }
-
-    /* ===== Skills ===== */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: 1.4rem;
-    }
-
-    .skill-card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      padding: 1.9rem;
-      border-radius: 4px;
-      transition: all 0.4s ease;
-      position: relative;
-    }
-
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 4px;
-      padding: 1px;
-      background: linear-gradient(135deg, transparent, transparent);
-      transition: background 0.4s ease;
-      pointer-events: none;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-    }
-
-    .skill-card:hover {
-      transform: translateY(-3px);
-      background: rgba(19, 19, 22, 0.95);
-    }
-
-    .skill-card:hover::before {
-      background: linear-gradient(135deg, var(--accent), transparent);
-    }
-
-    .skill-card-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--accent);
-      letter-spacing: 2.2px;
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-    }
-
-    .skill-card h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.3rem;
-      font-weight: 400;
-      margin-bottom: 1.2rem;
-      color: var(--text);
-      letter-spacing: -0.3px;
-    }
-
-    .skill-list {
-      list-style: none;
-    }
-
-    .skill-list li {
-      color: var(--text-dim);
-      font-size: 0.88rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      font-weight: 300;
-    }
-
-    .skill-list li:last-child { border-bottom: none; }
-
-    .skill-list li span {
-      color: var(--text-faint);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-    }
-
-    /* ===== Earlier ===== */
-    .earlier-list {
-      display: grid;
-      gap: 0;
-    }
-
-    .earlier-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      padding: 1.6rem 0;
-      border-bottom: 1px solid var(--border);
-      align-items: start;
-      gap: 1.5rem;
-    }
-
-    .earlier-item:first-child {
-      border-top: 1px solid var(--border);
-    }
-
-    .earlier-item h4 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.3px;
-    }
-
-    .earlier-item p {
-      color: var(--text-dim);
-      font-size: 0.92rem;
-      line-height: 1.65;
-      max-width: 600px;
-      font-weight: 300;
-    }
-
-    .earlier-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-faint);
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      padding-top: 0.4rem;
-    }
-
-    /* ===== Background ===== */
-    .bg-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem 3rem;
-    }
-
-    .bg-item {
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .bg-item h4 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.3px;
-    }
-
-    .bg-item-sub {
-      color: var(--text-dim);
-      font-size: 0.92rem;
-      margin-bottom: 0.3rem;
-      font-weight: 300;
-    }
-
-    .bg-item-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-faint);
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-    }
-
-    /* ===== Contact ===== */
-    .contact {
-      padding: 8rem 0;
-      text-align: center;
-    }
-
-    .availability {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-      padding: 0.5rem 1.1rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 100px;
-    }
-
-    .availability::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: blink 2s ease-in-out infinite;
-    }
-
-    .contact-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -1.5px;
-      margin-bottom: 1.6rem;
-    }
-
-    .contact-title em {
-      font-style: italic;
-      color: var(--accent);
-      font-weight: 300;
-    }
-
-    .contact-sub {
-      color: var(--text-dim);
-      font-size: 1.05rem;
-      max-width: 520px;
-      margin: 0 auto 3rem;
-      line-height: 1.75;
-      font-weight: 300;
-    }
-
-    .contact-grid {
-      display: grid;
-      gap: 0.8rem;
-      max-width: 480px;
-      margin: 0 auto 3rem;
-    }
-
-    .contact-row {
-      display: flex;
-      justify-content: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .contact-method {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      padding: 0.75rem 1.4rem;
-      border: 1px solid var(--border-strong);
-      border-radius: 100px;
-      transition: all 0.3s ease;
-      font-weight: 400;
-    }
-
-    .contact-method:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    /* ===== Footer ===== */
-    footer {
-      padding: 2.5rem 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .footer-text {
-      color: var(--text-faint);
-      font-size: 0.78rem;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 1.5px;
-    }
-
-    .footer-text em {
-      color: var(--text-dim);
-      font-style: italic;
-      font-family: 'Fraunces', serif;
-      letter-spacing: 0.3px;
-      font-size: 0.85rem;
-    }
-
-    /* Content is visible first. JavaScript adds optional entry motion only. */
-    .reveal {
-      opacity: 1;
-      transform: none;
-    }
-
-    .reveal.visible {
-      animation: reveal-in 0.6s ease-out both;
-    }
-
-    @keyframes reveal-in {
-      from { transform: translateY(12px); }
-      to { transform: none; }
-    }
-
-    /* ===== Focus states ===== */
-    a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 900px) {
-      .hero {
-        padding: 7rem 1.5rem 4rem;
-        min-height: auto;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 3.5rem;
-      }
-
-      .portrait-wrap {
-        justify-self: center;
-        order: -1;
-        width: 260px;
-      }
-
-      .portrait, .portrait-frame {
-        width: 260px;
-        height: 325px;
-      }
-
-      .portrait-caption {
-        text-align: left;
-      }
-
-      .work-item {
-        grid-template-columns: 50px 1fr;
-        gap: 1.2rem;
-      }
-
-      .work-date {
-        grid-column: 2;
-        text-align: left;
-        padding-top: 0.5rem;
-      }
-
-      .bg-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .nav-links {
-        gap: 1.2rem;
-      }
-
-      .nav-links li:not(:last-child) {
-        display: none;
-      }
-
-      .nav-inner { gap: 1rem; }
-      .nav-links { flex-shrink: 0; }
-      .nav-cta { display: inline-flex; white-space: nowrap; }
-    }
-
-    @media (max-width: 600px) {
-      nav { padding: 1rem 1.2rem; }
-      .container, .container-narrow { padding: 0 1.4rem; }
-      section { padding: 4.5rem 0; }
-      .hero { padding: 6rem 1.4rem 3rem; }
-      .work-item { padding: 2rem 1.2rem; }
-      .skill-card { padding: 1.6rem; }
-      .contact { padding: 5rem 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .mesh-bg, .grain, .hero-badge::before, .availability::before { animation: none; }
-      html { scroll-behavior: auto; }
-      .reveal, .reveal.visible { opacity: 1; transform: none; transition: none; animation: none; }
-      .mesh-bg { transform: none !important; }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="mesh-bg"></div>
-  <div class="grain"></div>
-
-  <nav>
-    <div class="nav-inner">
-      <a href="#" class="logo">Mojtaba Javeed<span class="logo-dot">.</span></a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#skills">Toolkit</a></li>
-        <li><a href="#contact" class="nav-cta">Get in touch</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-content">
-        <div class="hero-badge">AI Automation Engineer</div>
-        <h1 class="hero-title">AI agents that <em>chase missing client documents</em> for UK accountancy practices.</h1>
-        <p class="hero-sub">
-          AI workflow + agent engineer (RAG, n8n, evals).
-        </p>
-        <div class="hero-ctas">
-          <a href="#work" class="btn btn-primary">View Work</a>
-          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>[BRAND] | AI agents for UK accountancy practices</title>
+    <meta
+      name="description"
+      content="Document-chasing workflows for UK accountancy practices. Explore our synthetic Missing-Docs prototype, human review and evaluation plan."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <meta
+      property="og:title"
+      content="[BRAND] | AI agents for UK accountancy practices"
+    />
+    <meta
+      property="og:description"
+      content="Document-chasing workflows for UK accountancy practices. Explore our synthetic Missing-Docs prototype, human review and evaluation plan."
+    />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <nav aria-label="Main navigation">
+      <div class="wrap nav">
+        <a class="wordmark" href="/"
+          >[BRAND]<span style="color: var(--accent)">.</span></a
+        >
+        <div class="navlinks">
+          <a class="secondary" href="/missing-docs-agent/">Missing-Docs Agent</a
+          ><a class="secondary" href="/#how">How we work</a
+          ><a
+            class="btn"
+            href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+            >Discuss a pilot</a
+          >
         </div>
       </div>
-
-      <div class="portrait-wrap">
-        <div class="portrait-frame"></div>
-        <img src="profile.jpg" alt="Mojtaba Javeed Siddiqui" class="portrait" loading="eager" />
-        <p class="portrait-caption">
-          <strong>Mojtaba Javeed Siddiqui</strong><br/>
-          AI Automation Engineer
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <span class="section-label">01 — About</span>
-      <h2 class="section-title reveal">Less chasing. <em>More accounting.</em></h2>
-
-      <div class="about-content reveal">
-        <p>
-          Small accountancy practices lose days every month asking clients for bank statements, invoices and receipts. I build AI agents that take that work on: <strong>document intake, LLM extraction, checklist logic and chase automation</strong>, with the accountant approving every message before it goes out.
-        </p>
-        <p>
-          Every agent keeps an <strong>audit log</strong> and is measured against a labelled <strong>eval set</strong>, so you can see what it got right, what it missed and why. Built with Python, n8n, RAG and LLM APIs. Recent B.Tech grad (CSE — AI &amp; ML).
-        </p>
-        <p>
-          Less interested in demos, more interested in <strong>what gets shipped.</strong> Open to pilot projects with UK practices, and to AI automation and agent engineering roles.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORK -->
-  <section id="work">
-    <div class="container">
-      <span class="section-label">02 — Selected Work</span>
-      <h2 class="section-title reveal">What I'm <em>building.</em></h2>
-      <p class="section-intro reveal">
-        Flagship project in progress, built in public. Demo data is synthetic and labelled as such.
-      </p>
-
-      <div class="work-list">
-        <div class="work-item reveal">
-          <div class="work-number">/ 01</div>
-          <div class="work-content">
-            <h3>Missing-Docs Agent — for UK accountancy practices</h3>
+    </nav>
+    <main id="main">
+      <header class="hero wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow"
+              >AI automation for UK accountancy practices</span
+            >
+            <h1>
+              AI agents that <em>chase missing client documents</em> for UK
+              accountancy practices.
+            </h1>
             <p>
-              Client uploads statements and invoices. The agent classifies and extracts them, checks them against what that client type needs, flags what is missing, and drafts a specific chase email. The accountant approves in one click, then reminders run on day 3, 7 and 14. Dashboard and audit log included, with accuracy measured on an eval set. Runs on Companies House data, public HMRC guidance and synthetic client documents.
+              We build document-chasing workflows that turn missing bank
+              statements, invoices and receipts into specific email drafts. Your
+              team stays in control of every message.
             </p>
-            <div class="work-tags">
-              <span class="work-tag">Document intake</span>
-              <span class="work-tag">LLM extraction</span>
-              <span class="work-tag">Checklist logic</span>
-              <span class="work-tag">Chase automation</span>
-              <span class="work-tag">Human approval</span>
-              <span class="work-tag">Audit logs</span>
-              <span class="work-tag">Evals</span>
+            <div class="actions">
+              <a
+                class="btn"
+                href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+                >Ask about a 15-minute pilot call</a
+              ><a class="textlink" href="/missing-docs-agent/"
+                >Explore the prototype ↗</a
+              >
+            </div>
+            <p class="note">
+              Missing-Docs Agent is a synthetic-data prototype, not a live
+              client service.
+            </p>
+          </div>
+          <figure class="portrait">
+            <img
+              src="/profile.jpg"
+              width="320"
+              height="400"
+              alt="Mojtaba Javeed Siddiqui, founder"
+              fetchpriority="high"
+            />
+            <figcaption>
+              <strong>Mojtaba Javeed Siddiqui</strong><br />Founder · Hyderabad,
+              India<br />AI automation engineer
+            </figcaption>
+          </figure>
+        </div>
+      </header>
+      <div class="wrap">
+        <div class="strip" aria-label="Evidence and current status">
+          <article>
+            <span class="status">Prototype built</span>
+            <h3>Dashboard + review</h3>
+            <p>
+              Local checklist board and draft review. Real screenshots are
+              awaiting capture.
+            </p>
+          </article>
+          <article>
+            <span class="status">Rerun pending</span>
+            <h3>Measured, not guessed</h3>
+            <p>
+              Post-fix evaluation results will appear here with the method and
+              failure cases.
+            </p>
+          </article>
+          <article>
+            <span class="status">No automatic sending</span>
+            <h3>A named human approves</h3>
+            <p>The demo records approval locally. It never sends an email.</p>
+          </article>
+        </div>
+      </div>
+      <section class="section" id="work">
+        <div class="wrap">
+          <span class="eyebrow">01 / The flagship</span>
+          <div class="split">
+            <div>
+              <h2>Less chasing.<br /><em>More accounting.</em></h2>
+              <p class="intro">
+                Missing-Docs Agent turns a folder of client documents into a
+                checklist of what is still missing, then drafts the chase.
+              </p>
+              <p>
+                LLM extraction reads the documents. Plain Python rules compare
+                them with the client's checklist. The dashboard shows complete,
+                missing and unclear items alongside the email draft.
+              </p>
+              <p>
+                Human approval, day 3/7/14 reminder logic and a local approval
+                audit trail are built into the prototype. Live sending and the
+                database-backed workflow still need pilot testing.
+              </p>
+              <div class="tags">
+                <span>Document extraction</span><span>Checklist rules</span
+                ><span>Human review</span><span>Synthetic evals</span>
+              </div>
+              <a class="textlink" href="/missing-docs-agent/"
+                >See the workflow and evidence plan ↗</a
+              >
+            </div>
+            <div>
+              <div class="placeholder">
+                <span class="media-tag"
+                  >Real dashboard screenshot / pending</span
+                >
+                <h3>The checklist, in view.</h3>
+                <p>
+                  Reserved for a capture of the actual Streamlit dashboard using
+                  labelled synthetic client documents.
+                </p>
+              </div>
+              <div class="placeholder">
+                <span class="media-tag">90-second demo / pending</span>
+                <h3>From documents to draft.</h3>
+                <p>
+                  The recording will show extraction, missing-item flags, the
+                  chase draft and local human approval. No video is available
+                  yet.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="work-date">In build</div>
         </div>
-
-        <div class="work-item reveal">
-          <div class="work-number">/ 02</div>
-          <div class="work-content">
-            <h3>AI Workflow Automation with n8n</h3>
+      </section>
+      <section class="section" id="demos">
+        <div class="wrap">
+          <span class="eyebrow">02 / Next on the build list</span>
+          <h2>Public data.<br /><em>No client uploads.</em></h2>
+          <p class="intro">
+            Two small interactive demos are planned. They are not available on
+            this site yet.
+          </p>
+          <div class="split">
+            <article class="panel">
+              <span class="status">Planned · not live</span>
+              <h3>Companies House Health Checker</h3>
+              <p>
+                A company-number lookup for public filing dates and overdue
+                records, with a plain-English summary of what needs attention.
+              </p>
+              <p class="small">
+                No lookup form or API connection is active here. API credentials
+                will stay server-side.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="status">Planned · not live</span>
+              <h3>Chase-email drafter</h3>
+              <p>
+                A missing-items list turned into polite, specific reminder
+                drafts in a UK practice tone. Nothing sent, no real documents
+                required.
+              </p>
+              <p class="small">
+                The interactive version needs a separate build. The flagship
+                already uses deterministic chase templates.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="how">
+        <div class="wrap">
+          <span class="eyebrow">03 / How we work</span>
+          <h2>Your team makes <em>the final call.</em></h2>
+          <div class="cards">
+            <article class="panel">
+              <span class="number">01</span>
+              <h3>Review before sending</h3>
+              <p>
+                The prototype creates drafts and requires a named human to
+                approve them. Approval writes a local outbox record; it does not
+                send.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="number">02</span>
+              <h3>Keep the reasoning visible</h3>
+              <p>
+                Checklist results show the missing item, reason and rule source.
+                The prototype also keeps a local record of draft creation and
+                approval.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="number">03</span>
+              <h3>Agree data handling first</h3>
+              <p>
+                Every demo uses labelled synthetic data. Before a real-data
+                pilot, we need to agree the purpose, access, retention and
+                deletion rules, and the data-processing terms.
+              </p>
+            </article>
+          </div>
+          <div class="callout">
             <p>
-              Multi-step pipelines connecting LLM APIs (OpenAI, Anthropic) with notification and routing systems. Reusable workflow templates for drafting, orchestration and approvals, built to cut manual ops time.
+              <strong
+                >UK GDPR and ICO considerations are part of pilot
+                preparation.</strong
+              >
+              This is not a claim of GDPR certification, ICO registration or
+              readiness for real client documents. We will review hosting, AI
+              providers and any international data transfers with your practice
+              before a real-data pilot. UK-hours contact times will be agreed
+              before it starts.
             </p>
-            <div class="work-tags">
-              <span class="work-tag">n8n</span>
-              <span class="work-tag">OpenAI</span>
-              <span class="work-tag">Anthropic</span>
-              <span class="work-tag">API Integration</span>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="about">
+        <div class="wrap">
+          <span class="eyebrow">04 / A named person behind the work</span>
+          <div class="about-grid">
+            <div>
+              <h2>Small practice.<br /><em>Clear responsibility.</em></h2>
+              <p>
+                [BRAND] is a small AI automation practice based in Hyderabad,
+                India, founded by Mojtaba Javeed Siddiqui. We build for UK
+                accountancy practices, with a named human responsible for
+                design, testing and review.
+              </p>
+              <p>
+                Our team uses AI agents for the build work. Accountants remain
+                responsible for deciding what their clients need. The prototype
+                gives no tax advice and files nothing with HMRC.
+              </p>
+            </div>
+            <div>
+              <div class="credential">
+                <h3>Python + LLM extraction</h3>
+                <p>
+                  Gemini and Groq provider chain, checklist rules and labelled
+                  synthetic evaluation.
+                </p>
+              </div>
+              <div class="credential">
+                <h3>B.Tech · CSE (AI &amp; ML)</h3>
+                <p>DIEMS / BATU · Graduated 2025</p>
+              </div>
+              <div class="credential">
+                <h3>Evidence before promises</h3>
+                <p>
+                  We will publish the post-fix results, actual dashboard
+                  captures and a demo recording when they have been checked.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="work-date">2025</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS / TOOLKIT -->
-  <section id="skills">
-    <div class="container">
-      <span class="section-label">03 — Toolkit</span>
-      <h2 class="section-title reveal">The <em>toolkit.</em></h2>
-      <p class="section-intro reveal">
-        What the agents are built and tested with.
-      </p>
-
-      <div class="skills-grid">
-        <div class="skill-card reveal">
-          <div class="skill-card-label">Intake</div>
-          <h3>Document Intake &amp; Extraction</h3>
-          <ul class="skill-list">
-            <li>OCR and LLM extraction</li>
-            <li>Bank statements, invoices, receipts</li>
-            <li>Structured JSON outputs</li>
-            <li>Client-type checklists</li>
-          </ul>
+      </section>
+      <section class="contact wrap" id="contact">
+        <span class="eyebrow">One practice. One small pilot.</span>
+        <h2>Let's start with <em>15 minutes.</em></h2>
+        <p>
+          Tell us which documents your team spends time chasing. We can discuss
+          a small pilot, what it needs to prove, and where human review stays in
+          the loop.
+        </p>
+        <div class="actions">
+          <a
+            class="btn"
+            href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+            >Ask about a 15-minute pilot call</a
+          >
         </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-card-label">Agents</div>
-          <h3>Agents &amp; RAG</h3>
-          <ul class="skill-list">
-            <li>OpenAI <span>API</span></li>
-            <li>Anthropic <span>API</span></li>
-            <li>RAG over HMRC guidance</li>
-            <li>Human-approval steps</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-card-label">Pipes</div>
-          <h3>Workflow Automation</h3>
-          <ul class="skill-list">
-            <li>n8n <span>automation</span></li>
-            <li>Chase and reminder schedules</li>
-            <li>Email and notification routing</li>
-            <li>Audit logging</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-card-label">Quality</div>
-          <h3>Evals &amp; Testing</h3>
-          <ul class="skill-list">
-            <li>Labelled eval sets</li>
-            <li>Accuracy and miss-rate reporting</li>
-            <li>Regression checks</li>
-            <li>Prompt versioning</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-card-label">Code</div>
-          <h3>Programming &amp; Tools</h3>
-          <ul class="skill-list">
-            <li>Python</li>
-            <li>Git / GitHub</li>
-            <li>Companies House API</li>
-            <li>Notion</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- BACKGROUND -->
-  <section>
-    <div class="container">
-      <span class="section-label">04 — Background</span>
-      <h2 class="section-title reveal">The <em>credentials.</em></h2>
-
-      <div class="bg-grid">
-        <div class="bg-item reveal">
-          <h4>B.Tech — Computer Science &amp; Engineering</h4>
-          <p class="bg-item-sub">AI &amp; ML Specialization · BATU / DIEMS, Aurangabad</p>
-          <p class="bg-item-meta">Graduated 2025 · GPA 7.1</p>
-        </div>
-
-        <div class="bg-item reveal">
-          <h4>ML Engineering Workshop — Organised</h4>
-          <p class="bg-item-sub">AIML chapter, DIEMS</p>
-          <p class="bg-item-meta">2024</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="contact">
-    <div class="container-narrow">
-      <div class="availability reveal">Based in India</div>
-      <h2 class="contact-title reveal">Let's <em>make something</em>.</h2>
-      <p class="contact-sub reveal">
-        Run or work in a UK accountancy practice and tired of chasing clients for documents? Get in touch.
-      </p>
-
-      <div class="contact-grid reveal">
-        <div class="contact-row">
-          <a href="mailto:mojtaba.javeed@gmail.com" class="contact-method">mojtaba.javeed@gmail.com</a>
-          <a href="https://wa.me/919699651506" target="_blank" rel="noopener" class="contact-method" aria-label="WhatsApp business contact, +91 9699651506">WhatsApp · +91 9699651506</a>
-        </div>
-        <div class="contact-row">
-          <a href="https://www.linkedin.com/in/themojtabajaveed" target="_blank" rel="noopener" class="contact-method">LinkedIn</a>
-          <a href="https://github.com/themojtabajaveed" target="_blank" rel="noopener" class="contact-method">GitHub</a>
-          <a href="https://twitter.com/mojtabajaveed" target="_blank" rel="noopener" class="contact-method">Twitter</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p class="footer-text">© 2026 Mojtaba Javeed Siddiqui · <em>Built late at night.</em></p>
-    </div>
-  </footer>
-
-  <script>
-    // Optional enhancement: failures never hide the underlying content.
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!reducedMotion.matches && 'IntersectionObserver' in window) {
-      try {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-      } catch (_) {
-        // Default CSS remains fully readable without this enhancement.
-      }
-    }
-
-    // Respect reduced motion at load and when the preference changes.
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      const hero = document.querySelector('.hero');
-      const meshBg = document.querySelector('.mesh-bg');
-      let rafId = null;
-      if (hero && meshBg) {
-        hero.addEventListener('mousemove', (e) => {
-          if (reducedMotion.matches || rafId !== null) return;
-          rafId = requestAnimationFrame(() => {
-            if (!reducedMotion.matches) {
-              const x = (e.clientX / window.innerWidth - 0.5) * 14;
-              const y = (e.clientY / window.innerHeight - 0.5) * 14;
-              meshBg.style.transform = `translate(${x}px, ${y}px)`;
-            }
-            rafId = null;
-          });
-        });
-        const resetMotion = () => {
-          if (reducedMotion.matches) {
-            if (rafId !== null) cancelAnimationFrame(rafId);
-            rafId = null;
-            meshBg.style.transform = '';
-          }
-        };
-        if (reducedMotion.addEventListener) {
-          reducedMotion.addEventListener('change', resetMotion);
-        }
-      }
-    }
-  </script>
-</body>
+        <p class="note">
+          Email to arrange a time. A booking calendar is not connected yet.
+        </p>
+        <p class="contact-details">
+          <strong>Mojtaba Javeed Siddiqui</strong><br /><a
+            href="mailto:mojtaba.javeed@gmail.com"
+            >mojtaba.javeed@gmail.com</a
+          ><br /><a
+            href="https://wa.me/919699651506?text=I%27d+like+to+discuss+a+15-minute+pilot+call+for+our+accountancy+practice."
+            >WhatsApp · +91 9699651506</a
+          ><br />Hyderabad, India
+        </p>
+      </section>
+      <footer class="wrap footer">
+        <p>
+          © 2026 [BRAND] · Founded by Mojtaba Javeed Siddiqui<br />Synthetic
+          demo data only. No tax advice or HMRC filing.
+        </p>
+        <a href="https://github.com/themojtabajaveed">GitHub profile ↗</a>
+      </footer>
+    </main>
+  </body>
 </html>

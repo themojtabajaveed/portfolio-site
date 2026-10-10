@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Missing-Docs Agent | [BRAND]</title>
+    <meta
+      name="description"
+      content="Our synthetic document-chasing prototype: extraction, checklist flags, chase drafts and local human approval. Evaluation results and demo evidence pending."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <meta property="og:title" content="Missing-Docs Agent | [BRAND]" />
+    <meta
+      property="og:description"
+      content="Our synthetic document-chasing prototype: extraction, checklist flags, chase drafts and local human approval. Evaluation results and demo evidence pending."
+    />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <nav aria-label="Main navigation">
+      <div class="wrap nav">
+        <a class="wordmark" href="/"
+          >[BRAND]<span style="color: var(--accent)">.</span></a
+        >
+        <div class="navlinks">
+          <a class="secondary" href="/missing-docs-agent/">Missing-Docs Agent</a
+          ><a class="secondary" href="/#how">How we work</a
+          ><a
+            class="btn"
+            href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+            >Discuss a pilot</a
+          >
+        </div>
+      </div>
+    </nav>
+    <main id="main">
+      <header class="hero wrap">
+        <div class="case-hero">
+          <span class="eyebrow">Flagship / Synthetic-data prototype</span>
+          <h1>
+            Missing documents.<br /><em>A specific chase.</em><br />A human in
+            control.
+          </h1>
+          <p>
+            Missing-Docs Agent helps a practice see what a client has sent, what
+            is still missing, and what to ask for next. We have built the local
+            prototype. The post-fix evaluation and demo evidence are still
+            pending.
+          </p>
+          <div class="actions">
+            <a
+              class="btn"
+              href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+              >Ask about a 15-minute pilot call</a
+            ><a class="textlink" href="#workflow">Read the walkthrough ↓</a>
+          </div>
+        </div>
+      </header>
+      <section class="section">
+        <div class="wrap split">
+          <div>
+            <span class="eyebrow">The practice's problem</span>
+            <h2>"What are we<br /><em>still waiting for?"</em></h2>
+          </div>
+          <div>
+            <p class="intro">
+              A client sends some receipts, a few invoices and most of their
+              bank statements. Someone still has to match them against the job,
+              spot the gaps and write another email.
+            </p>
+            <p>
+              We separate the reading from the rules: AI extracts the fields, a
+              deterministic checklist finds missing or unclear items, and a
+              human checks the draft.
+            </p>
+            <p class="small">
+              This is a demonstration of the workflow, not evidence of saved
+              staff hours or improved client response rates. Those need to be
+              measured in a pilot.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="workflow">
+        <div class="wrap">
+          <span class="eyebrow">01 / Four steps, end to end</span>
+          <h2>From intake to <em>human review.</em></h2>
+          <div class="walkthrough">
+            <article class="panel">
+              <span class="number">01 / Intake + extraction</span>
+              <h3>Read what arrived</h3>
+              <p>
+                The local pipeline reads a synthetic client folder. Providers
+                classify documents and extract type, date, total and
+                counterparty. The live LLM route uses Gemini, a backup Gemini
+                key and Groq for text fallback.
+              </p>
+              <p class="small">
+                <strong>Boundary:</strong> this is folder-based input, not a
+                deployed client upload portal. The offline baseline is regex,
+                not AI.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="number">02 / Checklist + flags</span>
+              <h3>Find the specific gaps</h3>
+              <p>
+                Rules for sole traders, limited-company year ends and VAT packs
+                compare received documents with the client profile. Results
+                distinguish complete, missing and unclear, including missing
+                statement months.
+              </p>
+              <p class="small">
+                <strong>Checks:</strong> separate validation flags wrong year,
+                wrong client and non-business documents. Rule sources cite
+                public gov.uk guidance; an accountant must confirm the
+                checklist.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="number">03 / Draft + dashboard</span>
+              <h3>Ask only for what is missing</h3>
+              <p>
+                Deterministic templates turn missing or unclear items into a
+                polite chase email. The Streamlit dashboard brings the client
+                checklist and draft into one review screen.
+              </p>
+              <p class="small">
+                <strong>Boundary:</strong> chase copy is template-based, not
+                LLM-written. The dashboard uses synthetic records.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="number">04 / Approval + audit</span>
+              <h3>A person approves. Nothing sends.</h3>
+              <p>
+                A named reviewer approves the draft. The prototype writes a
+                local outbox entry and approval audit trail, then calculates
+                reminder dates at day 3, 7 and 14.
+              </p>
+              <p class="small">
+                <strong>Boundary:</strong> no email is sent. Reminder logic can
+                re-check remaining items; a live scheduler, mail integration and
+                database-backed audit trail are not verified.
+              </p>
+            </article>
+          </div>
+          <div class="sequence" aria-label="Reminder cadence">
+            <span>Day 0 · Review draft</span><span>Day 3 · Re-check gaps</span
+            ><span>Day 7 · Re-check gaps</span
+            ><span>Day 14 · Re-check gaps</span>
+          </div>
+          <div class="callout">
+            <p>
+              <strong>Integration status:</strong> Companies House lookup code
+              can supply accounting dates when configured. It has not been
+              confirmed live in this review. The n8n workflow is a scaffold and
+              the database connection still needs verification. These are not
+              advertised as deployed services.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="demo">
+        <div class="wrap">
+          <span class="eyebrow">02 / Show the actual product</span>
+          <h2>A 90-second <em>walkthrough.</em></h2>
+          <p class="intro">
+            Intake → extraction → missing-item flags → chase draft → human
+            approval. The final capture will use labelled synthetic data
+            throughout.
+          </p>
+          <div class="placeholder" style="min-height: 300px">
+            <span class="media-tag">Demo video slot / awaiting recording</span>
+            <h3>No recording published yet.</h3>
+            <p>
+              This space is ready for the checked 90-second demo. Approval in
+              that demo records a local outbox entry, not an email send.
+            </p>
+          </div>
+          <div class="split" style="margin-top: 20px">
+            <div class="placeholder">
+              <span class="media-tag">Screenshot 01 / pending</span>
+              <h3>Client checklist</h3>
+              <p>
+                Actual dashboard capture showing complete, missing and unclear
+                items. No simulated UI is presented as product evidence.
+              </p>
+            </div>
+            <div class="placeholder">
+              <span class="media-tag">Screenshot 02 / pending</span>
+              <h3>Draft + approval audit</h3>
+              <p>
+                Actual capture of the chase draft, named reviewer and local
+                approval record. Synthetic client details only.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="evaluation">
+        <div class="wrap">
+          <span class="eyebrow">03 / Evaluation, with its limits</span>
+          <h2>Publish the method.<br /><em>Then the numbers.</em></h2>
+          <p class="intro">
+            Post-fix rerun results have not been supplied yet. We will not use
+            earlier scores or invent an accuracy headline.
+          </p>
+          <div class="evidence-grid">
+            <article class="panel">
+              <h3>Field extraction</h3>
+              <span class="pending-value">Pending</span>
+              <p>
+                Type, date, total and counterparty will each have their own
+                score and denominator.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Issue detection</h3>
+              <span class="pending-value">Pending</span>
+              <p>
+                Wrong-year, wrong-client and non-business-document checks, with
+                the confusion counts.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Coverage + failures</h3>
+              <span class="pending-value">Pending</span>
+              <p>
+                Documents attempted and answered, image coverage, skips,
+                provider errors and failovers.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Run provenance</h3>
+              <span class="pending-value">Pending</span>
+              <p>
+                Run date, repository revision, prompt version and provider
+                configuration.
+              </p>
+            </article>
+          </div>
+          <div class="split" style="margin-top: 32px">
+            <div>
+              <h3>The test set</h3>
+              <p>
+                The current harness targets 53 labelled synthetic documents:
+                clean text, British date formats, OCR damage, photo-like images,
+                wrong-year and wrong-client documents, and junk.
+              </p>
+              <p class="small">
+                The final published report must state what the rerun actually
+                attempted. This is not a real-client study or a guarantee of
+                production accuracy.
+              </p>
+            </div>
+            <div>
+              <h3>What counts as a miss</h3>
+              <p>
+                Type and date must match the labelled answer. Totals must match
+                within half a penny. Counterparty matching normalises case,
+                punctuation and certain company suffixes.
+              </p>
+              <p class="small">
+                The harness excludes fields with no labelled value. Skips and
+                request failures must be reported alongside scores, not hidden
+                behind a percentage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="pilot">
+        <div class="wrap split">
+          <div>
+            <span class="eyebrow">04 / Proposed pilot</span>
+            <h2>Two weeks.<br /><em>One client segment.</em></h2>
+            <p>
+              A possible pilot shape, to agree with your practice. No rollout,
+              pricing or real-data processing is committed by this page.
+            </p>
+          </div>
+          <div class="panel">
+            <ul>
+              <li>
+                Choose one client segment and agree its document checklist with
+                a qualified accountant.
+              </li>
+              <li>
+                Start with synthetic documents, then agree data-processing terms
+                before using real client files.
+              </li>
+              <li>
+                Set the human-review and sending process. The current prototype
+                never sends.
+              </li>
+              <li>
+                Measure missed items, corrections and time spent reviewing. Keep
+                a record of failures.
+              </li>
+              <li>
+                At two weeks, decide whether to continue, change the workflow or
+                stop.
+              </li>
+            </ul>
+            <p class="small" style="margin: 16px 0 0">
+              Hosting, access, retention, deletion, provider use and
+              international transfers must be agreed first. No GDPR compliance
+              or ICO registration claim is made here.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="contact wrap" id="contact">
+        <span class="eyebrow">One practice. One small pilot.</span>
+        <h2>Let's start with <em>15 minutes.</em></h2>
+        <p>
+          Tell us which documents your team spends time chasing. We can discuss
+          a small pilot, what it needs to prove, and where human review stays in
+          the loop.
+        </p>
+        <div class="actions">
+          <a
+            class="btn"
+            href="mailto:mojtaba.javeed@gmail.com?subject=15-minute%20accountancy%20pilot%20call"
+            >Ask about a 15-minute pilot call</a
+          >
+        </div>
+        <p class="note">
+          Email to arrange a time. A booking calendar is not connected yet.
+        </p>
+        <p class="contact-details">
+          <strong>Mojtaba Javeed Siddiqui</strong><br /><a
+            href="mailto:mojtaba.javeed@gmail.com"
+            >mojtaba.javeed@gmail.com</a
+          ><br /><a
+            href="https://wa.me/919699651506?text=I%27d+like+to+discuss+a+15-minute+pilot+call+for+our+accountancy+practice."
+            >WhatsApp · +91 9699651506</a
+          ><br />Hyderabad, India
+        </p>
+      </section>
+      <footer class="wrap footer">
+        <p>
+          © 2026 [BRAND] · Founded by Mojtaba Javeed Siddiqui<br />Synthetic
+          demo data only. No tax advice or HMRC filing.
+        </p>
+        <a href="https://github.com/themojtabajaveed">GitHub profile ↗</a>
+      </footer>
+    </main>
+  </body>
+</html>
