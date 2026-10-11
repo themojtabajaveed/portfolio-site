@@ -43,8 +43,7 @@
           <p>
             Missing-Docs Agent helps a practice see what a client has sent, what
             is still missing, and what to ask for next. We have built the local
-            prototype. The post-fix evaluation and demo evidence are still
-            pending.
+            prototype. The post-fix evaluation is complete. Dashboard captures and the demo recording are still pending.
           </p>
           <div class="actions">
             <a
@@ -202,41 +201,26 @@
           <span class="eyebrow">03 / Evaluation, with its limits</span>
           <h2>Publish the method.<br /><em>Then the numbers.</em></h2>
           <p class="intro">
-            Post-fix rerun results have not been supplied yet. We will not use
-            earlier scores or invent an accuracy headline.
+            The post-fix evaluation covered all 53 labelled synthetic documents on 10 October 2026. These are test-set results, not a real-client study or a guarantee of production accuracy.
           </p>
           <div class="evidence-grid">
             <article class="panel">
               <h3>Field extraction</h3>
-              <span class="pending-value">Pending</span>
-              <p>
-                Type, date, total and counterparty will each have their own
-                score and denominator.
-              </p>
+              <span class="pending-value">100% / 100% / 100% / 93.9%</span>
+              <p>Document type / date / total / counterparty.</p>
             </article>
             <article class="panel">
               <h3>Issue detection</h3>
-              <span class="pending-value">Pending</span>
-              <p>
-                Wrong-year, wrong-client and non-business-document checks, with
-                the confusion counts.
-              </p>
+              <span class="pending-value">100%</span>
             </article>
             <article class="panel">
               <h3>Coverage + failures</h3>
-              <span class="pending-value">Pending</span>
-              <p>
-                Documents attempted and answered, image coverage, skips,
-                provider errors and failovers.
-              </p>
+              <p>All 53 documents were evaluated, including 8 images. The OCR-noise text category had all fields correct on 4 of 7 documents (57%); the other six categories scored 100%.</p>
             </article>
             <article class="panel">
               <h3>Run provenance</h3>
-              <span class="pending-value">Pending</span>
-              <p>
-                Run date, repository revision, prompt version and provider
-                configuration.
-              </p>
+              <span class="pending-value">10 October 2026</span>
+              <p>evalset, prompt v2, commit 37f198a. Primary Gemini answered all 53 documents.</p>
             </article>
           </div>
           <div class="split" style="margin-top: 32px">
